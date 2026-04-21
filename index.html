@@ -6,43 +6,54 @@
   <title>Random Shape Grid</title>
 
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: #fff;
-    }
+  body {
+    margin: 0;
+    overflow: hidden; /* 🔥 hides cropped edges */
+    background: #fff;
+  }
 
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      width: 100vw;
-      height: 100vh;
-    }
+  .grid-wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 100vmax;
+    height: 100vmax;
+    transform: translate(-50%, -50%);
+  }
 
-    .cell {
-      overflow: hidden;
-    }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    width: 100%;
+    height: 100%;
+  }
 
-    .cell img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover; /* 🔥 fills entire square */
-      display: block;
-    }
-  </style>
-</head>
+  .cell {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+  }
+
+  .cell img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* or cover if you want fill */
+    display: block;
+  }
+</style>
 
 <body>
-  <div class="grid">
-    <div class="cell"><img id="img1"></div>
-    <div class="cell"><img id="img2"></div>
-    <div class="cell"><img id="img3"></div>
-    <div class="cell"><img id="img4"></div>
+  <div class="grid-wrapper">
+    <div class="grid">
+      <div class="cell"><img id="img1"></div>
+      <div class="cell"><img id="img2"></div>
+      <div class="cell"><img id="img3"></div>
+      <div class="cell"><img id="img4"></div>
+    </div>
   </div>
 
   <script>
-    const TOTAL_SHAPES = 36; // adjust if needed
+    const TOTAL_SHAPES = 36;
     const PATH = "shapes/";
 
     function getRandomShape() {
@@ -50,22 +61,21 @@
       return `${PATH}shape${num}.svg?v=${Date.now()}`;
     }
 
-    function startRandomizer(elementId, interval) {
-      const el = document.getElementById(elementId);
+    function startRandomizer(id, interval) {
+      const el = document.getElementById(id);
 
       function update() {
         el.src = getRandomShape();
       }
 
-      update(); // initial load
+      update();
       setInterval(update, interval);
     }
 
-    // Independent refresh speeds
-    startRandomizer("img1", 1000);   // 1 sec
-    startRandomizer("img2", 7500);   // 7.5 sec
-    startRandomizer("img3", 5000);   // 5 sec
-    startRandomizer("img4", 12000);  // 12 sec
+    startRandomizer("img1", 1000);
+    startRandomizer("img2", 7500);
+    startRandomizer("img3", 5000);
+    startRandomizer("img4", 12000);
   </script>
 </body>
 </html>
